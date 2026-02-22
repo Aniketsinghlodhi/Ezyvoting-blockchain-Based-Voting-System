@@ -15,15 +15,29 @@ A full-stack blockchain-powered voting system built with Solidity, Hardhat, Expr
 ## Project Structure
 
 ```
-FRONTEND/
-├── contracts/          # Solidity contracts
-├── scripts/            # Hardhat deploy & seed scripts
-├── test/               # Contract tests
-├── backend/            # Express backend (auth, DB, blockchain APIs)
-├── frontend/           # Next.js frontend (pages, components)
-├── artifacts/          # Compiled contract ABIs (generated)
+root/
+├── contracts/          # Solidity smart contracts
+├── scripts/            # Hardhat deploy, seed & verify scripts
+├── test/               # Contract unit tests
+├── backend/            # Express.js API (auth, DB, blockchain)
+│   ├── src/
+│   │   ├── index.js        # Server entry point
+│   │   ├── middleware/     # JWT auth middleware
+│   │   ├── models/         # Mongoose models (User, Voter)
+│   │   ├── routes/         # API routes (auth, blockchain)
+│   │   └── services/       # ethersService (contract interactions)
+│   ├── .env.example
+│   └── package.json
+├── frontend/           # Next.js frontend
+│   ├── pages/              # Next.js pages (admin, voter dashboards)
+│   ├── components/         # Shared React components
+│   ├── lib/                # Contract helpers, alerts utility
+│   ├── .env.local.example
+│   ├── vercel.json
+│   └── package.json
 ├── hardhat.config.js
-└── package.json
+├── contract-address.json
+└── package.json        # Root — Hardhat scripts
 ```
 
 ## Quick Start (Local Demo in ~5 minutes)
@@ -31,7 +45,6 @@ FRONTEND/
 ### 1. Install and compile contracts
 
 ```bash
-cd "/Users/aniketlodhi/developer/Capstone 1/FRONTEND"
 npm install
 npx hardhat compile
 npx hardhat test
@@ -153,7 +166,6 @@ npm run dev
 **Step 1: Configure environment**
 
 ```bash
-cd "/Users/aniketlodhi/developer/Capstone 1/FRONTEND"
 # Copy and fill in backend/.env with Sepolia values
 cp backend/.env.example backend/.env
 
@@ -322,14 +334,49 @@ NEXT_PUBLIC_RPC_URL=http://127.0.0.1:8545 (optional, for read-only fallback)
 | `ID mismatch` on vote | Voter ID doesn't match on-chain hash | Ensure exact same string used on register and vote |
 | `Already voted` | Voter tried to vote twice | Chain prevents double voting (expected behavior) |
 
+## Production Deployment
+
+### Frontend → Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new), sign in with GitHub
+2. Import **Ezyvoting-blockchain-Based-Voting-System**
+3. Set **Root Directory** to `frontend`
+4. Framework preset: **Next.js** (auto-detected)
+5. Add environment variables:
+   - `NEXT_PUBLIC_CONTRACT_ADDRESS` = your deployed contract address
+   - `NEXT_PUBLIC_BACKEND_URL` = your backend URL (e.g., `https://ezyvoting-api.onrender.com`)
+   - `NEXT_PUBLIC_RPC_URL` = Sepolia RPC (optional, MetaMask is used by default)
+6. Click **Deploy** — auto-deploys on every push to `main`
+
+### Backend → Render / Railway
+
+1. Create a **Web Service** on [render.com](https://render.com) or [railway.app](https://railway.app)
+2. Connect repo, set **Root Directory** to `backend`
+3. Build command: `npm install`
+4. Start command: `npm start`
+5. Set environment variables from `backend/.env.example`
+6. Required vars: `MONGO_URI`, `JWT_SECRET`, `RPC_URL`, `PRIVATE_KEY`, `CONTRACT_ADDRESS`, `ALLOWED_ORIGINS`
+7. Set `ALLOWED_ORIGINS` to your Vercel frontend URL
+
+### Smart Contract → Sepolia
+
+```bash
+# 1. Configure .env at root with RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY
+npm run deploy:sepolia
+# 2. Verify on Etherscan
+npm run verify:sepolia
+# 3. Seed demo data (optional)
+npm run seed:sepolia
+```
+
 ## Next Steps
 
-- [x] Add Etherscan verification for mainnet/testnet deployment — **DONE** (`scripts/verify.js`, npm scripts added)
-- [x] Add UI polish and accessibility features — **DONE** (enhanced CSS with loading states, error handling, responsive design)
+- [x] Add Etherscan verification — `scripts/verify.js`
+- [x] Add UI polish and accessibility features
+- [x] Production-ready CORS and env config
 - [ ] Implement rate limiting for sensitive endpoints
 - [ ] Add comprehensive error logging and monitoring
-- [ ] Deploy frontend to Vercel / backend to Railway or similar
-- [ ] Integrate with real identity verification (optional, for production)
+- [ ] Integrate with real identity verification (optional)
 - [ ] Write full integration tests
 
 ## Recent Enhancements

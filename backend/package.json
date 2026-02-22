@@ -2,6 +2,9 @@
   "name": "ezyvoting-backend",
   "version": "0.1.0",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
