@@ -1,14 +1,4 @@
 {
   "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/.next",
-  "installCommand": "cd frontend && npm install",
-  "devCommand": "cd frontend && npm run dev",
-  "env": {
-    "NEXT_PUBLIC_CONTRACT_ADDRESS": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-    "NEXT_PUBLIC_NETWORK": "sepolia",
-    "NEXT_PUBLIC_RPC_URL": "https://rpc.sepolia.org",
-    "NEXT_PUBLIC_APP_NAME": "EzyVoting"
-  }
+  "framework": "nextjs"
 }
