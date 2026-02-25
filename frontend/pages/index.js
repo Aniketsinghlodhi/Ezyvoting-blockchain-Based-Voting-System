@@ -24,9 +24,10 @@ export default function Home() {
         <section style={{ marginTop: 24 }}>
           <h2>Quick links</h2>
           <ul>
+            <li><a href="/elections">Elections (Commit-Reveal Voting)</a></li>
             <li><a href="/voter/register">Voter Register</a></li>
             <li><a href="/voter/login">Voter Login</a></li>
-            <li><a href="/voter/dashboard">Voter Dashboard</a></li>
+            <li><a href="/voter/dashboard">Voter Dashboard (Legacy)</a></li>
             <li><a href="/admin/register">Admin Register (with invite code)</a></li>
             <li><a href="/admin/login">Admin Login</a></li>
             <li><a href="/admin/dashboard">Admin Dashboard</a></li>
